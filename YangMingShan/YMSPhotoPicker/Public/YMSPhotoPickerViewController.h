@@ -19,6 +19,8 @@
  */
 @interface YMSPhotoPickerViewController : UIViewController
 
+@property (nonatomic) BOOL hideCamera;
+
 /**
  * @brief Assign a delegate owner for YMSPhotoPickerViewController. It will notify you when YMSPhotoPickerViewController receives access denied or finish interaction with user.
  *

@@ -145,13 +145,15 @@ static const CGFloat YMSPhotoFetchScaleResizingRatio = 0.75;
 {
     // +1 for camera cell
     PHFetchResult *fetchResult = self.currentCollectionItem[@"assets"];
-    
-    return fetchResult.count + 1;
+    if(_hideCamera)
+        return fetchResult.count;
+    else
+        return fetchResult.count + 1;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {   // Camera Cell
+    if (indexPath.row == 0 && !_hideCamera) {   // Camera Cell
         YMSCameraCell *cameraCell = [collectionView dequeueReusableCellWithReuseIdentifier:YMSCameraCellNibName forIndexPath:indexPath];
 
         self.session = cameraCell.session;
@@ -167,7 +169,7 @@ static const CGFloat YMSPhotoFetchScaleResizingRatio = 0.75;
 
     PHFetchResult *fetchResult = self.currentCollectionItem[@"assets"];
     
-    PHAsset *asset = fetchResult[indexPath.item-1];
+    PHAsset *asset = _hideCamera? fetchResult[indexPath.item]:fetchResult[indexPath.item-1];
     photoCell.representedAssetIdentifier = asset.localIdentifier;
     
     CGFloat scale = [UIScreen mainScreen].scale * YMSPhotoFetchScaleResizingRatio;
@@ -211,7 +213,7 @@ static const CGFloat YMSPhotoFetchScaleResizingRatio = 0.75;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
+    if (indexPath.row == 0 && !_hideCamera) {
         [self yms_presentCameraCaptureViewWithDelegate:self];
     }
     else if (NO == self.allowsMultipleSelection) {
@@ -244,7 +246,7 @@ static const CGFloat YMSPhotoFetchScaleResizingRatio = 0.75;
     }
     else {
         PHFetchResult *fetchResult = self.currentCollectionItem[@"assets"];
-        PHAsset *asset = fetchResult[indexPath.item-1];
+        PHAsset *asset =_hideCamera?fetchResult[indexPath.item]: fetchResult[indexPath.item-1];
         [self.selectedPhotos addObject:asset];
         self.doneItem.enabled = YES;
     }
@@ -268,12 +270,12 @@ static const CGFloat YMSPhotoFetchScaleResizingRatio = 0.75;
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.item == 0) {
+    if (indexPath.item == 0 && !_hideCamera) {
         // Camera cell doesn't need to be deselected
         return;
     }
     PHFetchResult *fetchResult = self.currentCollectionItem[@"assets"];
-    PHAsset *asset = fetchResult[indexPath.item-1];
+    PHAsset *asset = _hideCamera? fetchResult[indexPath.item]:fetchResult[indexPath.item-1];
 
     NSUInteger removedIndex = [self.selectedPhotos indexOfObject:asset];
 
