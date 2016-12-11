@@ -219,12 +219,12 @@ static const CGFloat YMSPhotoFetchScaleResizingRatio = 0.75;
     else if (NO == self.allowsMultipleSelection) {
         if (NO == self.shouldReturnImageForSingleSelection) {
             PHFetchResult *fetchResult = self.currentCollectionItem[@"assets"];
-            PHAsset *asset = fetchResult[indexPath.item-1];
+            PHAsset *asset = _hideCamera?fetchResult[indexPath.item]: fetchResult[indexPath.item-1];
             [self.selectedPhotos addObject:asset];
             [self finishPickingPhotos:nil];
         } else {
             PHFetchResult *fetchResult = self.currentCollectionItem[@"assets"];
-            PHAsset *asset = fetchResult[indexPath.item-1];
+            PHAsset *asset = _hideCamera?fetchResult[indexPath.item]: fetchResult[indexPath.item-1];
             
             // Prepare the options to pass when fetching the live photo.
             PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
