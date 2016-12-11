@@ -357,7 +357,7 @@ static const CGFloat YMSPhotoFetchScaleResizingRatio = 0.75;
 
         PHFetchResult *fetchResult = self.currentCollectionItem[@"assets"];
 
-        PHAsset *asset = fetchResult[indexPath.item-1];
+        PHAsset *asset = _hideCamera?fetchResult[indexPath.item]:fetchResult[indexPath.item-1];
 
         YMSSinglePhotoViewController *presentedViewController = [[YMSSinglePhotoViewController alloc] initWithPhotoAsset:asset imageManager:self.imageManager dismissalHandler:^(BOOL selected) {
             if (selected && [self collectionView:self.photoCollectionView shouldSelectItemAtIndexPath:indexPath]) {
