@@ -282,10 +282,10 @@ static const CGFloat YMSPhotoFetchScaleResizingRatio = 0.75;
     // Reload order higher than removed cell
     for (NSInteger i=removedIndex+1; i<self.selectedPhotos.count; i++) {
         PHAsset *needReloadAsset = self.selectedPhotos[i];
-        YMSPhotoCell *cell = (YMSPhotoCell *)[collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[fetchResult indexOfObject:needReloadAsset]+1 inSection:indexPath.section]];
+        YMSPhotoCell *cell = (YMSPhotoCell *)[collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:[fetchResult indexOfObject:needReloadAsset] inSection:indexPath.section]];
         cell.selectionOrder = cell.selectionOrder-1;
     }
-
+    
     [self.selectedPhotos removeObject:asset];
     if (self.selectedPhotos.count == 0) {
         self.doneItem.enabled = NO;
